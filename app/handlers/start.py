@@ -6,22 +6,23 @@ router = Router()
 
 
 @router.message(Command("start"))
-async def cmd_start(message: types.Message):
-    builder = ReplyKeyboardBuilder()
-    builder.add(types.KeyboardButton(text="📅 Расписание"))
-    builder.adjust(1)
+async def cmd_start(message: types.Message) -> None:
+    keyboard = (
+        ReplyKeyboardBuilder()
+        .add(types.KeyboardButton(text="📅 Расписание"))
+        .as_markup(resize_keyboard=True)
+    )
 
     await message.answer(
         "👋 Добро пожаловать в бот расписания КФУ!\n"
-        "Нажмите кнопку ниже чтобы посмотреть расписание",
-        reply_markup=builder.as_markup(resize_keyboard=True)
+        "Нажмите кнопку ниже, чтобы посмотреть расписание.",
+        reply_markup=keyboard,
     )
 
 
 @router.message(lambda message: message.text == "📅 Расписание")
-async def handle_schedule_button(message: types.Message):
+async def handle_schedule_button(message: types.Message) -> None:
     await message.answer(
-        "Введите номер группы:\n"
-        "Пример: 09-825, 8251160, 8251",
-        reply_markup=types.ReplyKeyboardRemove()
+        "Введите номер группы:\nПример: 09-825, 8251160, 8251",
+        reply_markup=types.ReplyKeyboardRemove(),
     )

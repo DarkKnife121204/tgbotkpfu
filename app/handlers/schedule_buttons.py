@@ -1,24 +1,17 @@
-from aiogram import Router, types
-from aiogram.filters import Command
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
 
-from app.config import cfg
-from app.services.google_csv import find_group_schedule
-from app.services.parser import parse_schedule
+from aiogram import Router, types
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 router = Router()
-log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-# Храним последние найденные расписания и группы по пользователям
-# Формат: {user_id: (group_name, lessons)}
 user_data: Dict[int, Tuple[str, List[dict]]] = {}
 
 
-def get_schedule_keyboard():
-    """Клавиатура для выбора периода"""
+def get_schedule_keyboard() -> types.ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
     builder.add(types.KeyboardButton(text="📅 Сегодня"))
     builder.add(types.KeyboardButton(text="📅 Завтра"))
@@ -29,37 +22,42 @@ def get_schedule_keyboard():
 
 
 def get_day_name(day_offset: int = 0) -> str:
-    """Получение названия дня недели"""
-    days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    days = ["Понедельник", "Вторник", "Среда",
+            "Четверг", "Пятница", "Суббота", "Воскресенье"]
     today = datetime.now() + timedelta(days=day_offset)
     return days[today.weekday()]
 
 
 def filter_lessons_by_day(lessons: List[dict], day_name: str) -> List[dict]:
-    """Фильтрация занятий по дню недели"""
     return [lesson for lesson in lessons if lesson.get("day") == day_name]
 
 
+def _time_to_minutes(time_str: str) -> int:
+    try:
+        hours, minutes = map(int, time_str.split(":"))
+        return hours * 60 + minutes
+    except Exception:
+        return 9999
+
+
 def format_day_schedule(lessons: List[dict], day_name: str, group: str) -> str:
-    """Старый дизайн без эмодзи и лишних отступов"""
     if not lessons:
         return f"<b>{day_name}</b>\n\nЗанятий нет\n"
 
-    lessons.sort(key=lambda x: x.get("time", ""))
+    lessons.sort(key=lambda x: _time_to_minutes(x.get("time", "")))
 
-    result = f"<b>{day_name}</b>\n\n"
+    result = [f"<b>{day_name}</b>\n"]
     for lesson in lessons:
-        time_ = lesson.get('time', '')
-        week = lesson.get('week_type', '')
-        subject = lesson.get('subject', '')
-        ltype = lesson.get('type', '')
-        building = lesson.get('building', '')
-        room1 = lesson.get('room1', '')
-        room2 = lesson.get('room2', '')
-        teacher = lesson.get('teacher', '')
+        time_ = lesson.get("time", "")
+        week = lesson.get("week_type", "")
+        subject = lesson.get("subject", "")
+        ltype = lesson.get("type", "")
+        building = lesson.get("building", "")
+        room1 = lesson.get("room1", "")
+        room2 = lesson.get("room2", "")
+        teacher = lesson.get("teacher", "")
 
-        # Старый формат без эмодзи
-        line1 = f"<b>{time_} [{week}] {subject}</b>{f' <i>({ltype})</i>' if ltype else ''}"
+        line1 = f"⏰ <b>{time_} [{week}] {subject}</b>{f' <i>({ltype})</i>' if ltype else ''}"
 
         loc_parts = []
         if building:
@@ -76,30 +74,29 @@ def format_day_schedule(lessons: List[dict], day_name: str, group: str) -> str:
 
         line2 = " — ".join(tail_parts) if tail_parts else ""
 
-        result += line1
+        result.append(line1)
         if line2:
-            result += f"\n{line2}"
-        result += "\n\n"
+            result.append(line2)
+        result.append("")
 
-    return result
+    return "\n".join(result).strip()
 
 
-@router.message(lambda message: message.text in ["📅 Сегодня", "📅 Завтра", "📋 Вся неделя", "🔍 Новая группа"])
-async def handle_schedule_buttons(message: types.Message):
-    """Обработчик кнопок расписания"""
+@router.message(lambda m: m.text in ["📅 Сегодня", "📅 Завтра", "📋 Вся неделя", "🔍 Другая группа"])
+async def handle_schedule_buttons(message: types.Message) -> None:
     user_id = message.from_user.id
 
-    if message.text == "🔍 Новая группа":
+    if message.text == "🔍 Другая группа":
         await message.answer(
             "Введите номер группы:\nПример: 09-825, 8251160, 8251",
-            reply_markup=types.ReplyKeyboardRemove()
+            reply_markup=types.ReplyKeyboardRemove(),
         )
         return
 
     if user_id not in user_data:
         await message.answer(
             "❌ Расписание не найдено. Сначала найдите группу:",
-            reply_markup=types.ReplyKeyboardRemove()
+            reply_markup=types.ReplyKeyboardRemove(),
         )
         return
 
@@ -108,20 +105,23 @@ async def handle_schedule_buttons(message: types.Message):
     if message.text == "📅 Сегодня":
         day_name = get_day_name(0)
         day_lessons = filter_lessons_by_day(lessons, day_name)
-        response = format_day_schedule(day_lessons, day_name, group)
+        await message.answer(format_day_schedule(day_lessons, day_name, group),
+                             parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "📅 Завтра":
         day_name = get_day_name(1)
         day_lessons = filter_lessons_by_day(lessons, day_name)
-        response = format_day_schedule(day_lessons, day_name, group)
+        await message.answer(format_day_schedule(day_lessons, day_name, group),
+                             parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "📋 Вся неделя":
-        response = f"<b>Расписание на неделю</b>\nГруппа: <b>{group}</b>\n\n"
-        days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+        await message.answer(f"📆 <b>Расписание на неделю</b>\nГруппа: <b>{group}</b>",
+                             parse_mode="HTML")
+
+        days_order = ["Понедельник", "Вторник", "Среда",
+                      "Четверг", "Пятница", "Суббота"]
 
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
-            if day_lessons:
-                response += format_day_schedule(day_lessons, day, group)
-
-    await message.answer(response, parse_mode="HTML", disable_web_page_preview=True)
+            day_text = format_day_schedule(day_lessons, day, group)
+            await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
