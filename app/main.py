@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from app.config import cfg
-from app.handlers import start, schedule
+from app.handlers import start, schedule, schedule_buttons
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,6 +15,7 @@ bot = Bot(cfg.bot_token)
 dp = Dispatcher()
 
 dp.include_router(start.router)
+dp.include_router(schedule_buttons.router)
 dp.include_router(schedule.router)
 
 async def main() -> None:
