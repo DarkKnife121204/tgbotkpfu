@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import Dict, List, Tuple
 
 from aiogram import Router, types
@@ -33,11 +33,21 @@ def filter_lessons_by_day(lessons: List[dict], day_name: str) -> List[dict]:
 
 
 def _time_to_minutes(time_str: str) -> int:
-    try:
-        hours, minutes = map(int, time_str.split(":"))
-        return hours * 60 + minutes
-    except Exception:
-        return 9999
+    hours, minutes = map(int, time_str.split(":"))
+    return hours * 60 + minutes
+
+
+def get_current_week_type() -> str:
+    week_number = date.today().isocalendar().week
+    return "н" if week_number % 2 == 0 else "в"
+
+
+def filter_by_week(lessons: List[dict]) -> List[dict]:
+    week_type = get_current_week_type()
+    return [
+        lesson for lesson in lessons
+        if not lesson.get("week_type") or lesson.get("week_type").lower() == week_type
+    ]
 
 
 def format_day_schedule(lessons: List[dict], day_name: str, group: str) -> str:
@@ -105,12 +115,14 @@ async def handle_schedule_buttons(message: types.Message) -> None:
     if message.text == "📅 Сегодня":
         day_name = get_day_name(0)
         day_lessons = filter_lessons_by_day(lessons, day_name)
+        day_lessons = filter_by_week(day_lessons)
         await message.answer(format_day_schedule(day_lessons, day_name, group),
                              parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "📅 Завтра":
         day_name = get_day_name(1)
         day_lessons = filter_lessons_by_day(lessons, day_name)
+        day_lessons = filter_by_week(day_lessons)
         await message.answer(format_day_schedule(day_lessons, day_name, group),
                              parse_mode="HTML", disable_web_page_preview=True)
 
