@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta, date
 from typing import Dict, List, Tuple
-
+import re
 from aiogram import Router, types
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 user_data: Dict[int, Tuple[str, List[dict]]] = {}
 
 
-def get_schedule_keyboard() -> types.ReplyKeyboardMarkup:
+def get_schedule_keyboard():
     builder = ReplyKeyboardBuilder()
     builder.add(types.KeyboardButton(text="📅 Сегодня"))
     builder.add(types.KeyboardButton(text="📅 Завтра"))
@@ -21,7 +21,7 @@ def get_schedule_keyboard() -> types.ReplyKeyboardMarkup:
     return builder.as_markup(resize_keyboard=True)
 
 
-def get_week_menu_keyboard() -> types.ReplyKeyboardMarkup:
+def get_week_menu_keyboard():
     builder = ReplyKeyboardBuilder()
     builder.add(types.KeyboardButton(text="🔎 Текущая неделя"))
     builder.add(types.KeyboardButton(text="➡️ Следующая неделя"))
@@ -31,28 +31,28 @@ def get_week_menu_keyboard() -> types.ReplyKeyboardMarkup:
     return builder.as_markup(resize_keyboard=True)
 
 
-def get_day_name(day_offset: int = 0) -> str:
+def get_day_name(day_offset: int = 0):
     days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     today = datetime.now() + timedelta(days=day_offset)
     return days[today.weekday()]
 
 
-def filter_lessons_by_day(lessons: List[dict], day_name: str) -> List[dict]:
+def filter_lessons_by_day(lessons: List[dict], day_name: str):
     return [lesson for lesson in lessons if lesson.get("day") == day_name]
 
 
-def _time_to_minutes(time_str: str) -> int:
+def _time_to_minutes(time_str: str):
     hours, minutes = map(int, time_str.split(":"))
     return hours * 60 + minutes
 
 
-def get_current_week_type(start_date: date = date(2025, 9, 1)) -> str:
+def get_current_week_type(start_date: date = date(2025, 9, 1)):
     today = date.today()
     weeks_passed = ((today - start_date).days // 7)
     return "в" if weeks_passed % 2 == 0 else "н"
 
 
-def filter_by_week(lessons: List[dict]) -> List[dict]:
+def filter_by_week(lessons: List[dict]):
     week_type = get_current_week_type()
     return [
         lesson for lesson in lessons
@@ -60,46 +60,49 @@ def filter_by_week(lessons: List[dict]) -> List[dict]:
     ]
 
 
-def format_day_schedule(lessons: List[dict], day_name: str, group: str) -> str:
+def format_day_schedule(lessons: List[dict], day_name: str, show_week_per_lesson: bool = False):
     if not lessons:
         return f"<b>{day_name}</b>\n\nЗанятий нет\n"
 
-    lessons.sort(key=lambda x: _time_to_minutes(x.get("time", "")))
+    lessons.sort(key=lambda l: _time_to_minutes(l.get("time", "")))
 
-    result = [f"<b>{day_name}</b>\n"]
-    for lesson in lessons:
-        time_ = lesson.get("time", "")
-        week = lesson.get("week_type", "")
-        subject = lesson.get("subject", "")
-        ltype = lesson.get("type", "")
-        building = lesson.get("building", "")
-        room1 = lesson.get("room1", "")
-        room2 = lesson.get("room2", "")
-        teacher = lesson.get("teacher", "")
+    if show_week_per_lesson:
+        header = f"<b>{day_name}</b>"
+    else:
+        week = (lessons[0].get("week_type") or "").strip()
+        header = f"<b>{day_name} [{week}]</b>" if week else f"<b>{day_name}</b>"
 
-        line1 = f"⏰ <b>{time_} [{week}] {subject}</b>{f' <i>({ltype})</i>' if ltype else ''}"
+    sep = "—" * 20
+    out = [header, sep]
+    for les in lessons:
+        time = les.get("time", "") or ""
+        week = (les.get("week_type") or "").strip()
+        subj = les.get("subject", "") or ""
+        ltype = les.get("type", "") or ""
+        building = les.get("building", "") or ""
+        room1 = les.get("room1", "") or ""
+        room2 = les.get("room2", "") or ""
+        traw = les.get("teacher", "") or ""
 
-        loc_parts = []
-        if building:
-            loc_parts.append(building)
+        line_time = f"⏰ {time}" + (f" [{week}]" if show_week_per_lesson and week else "")
+        line_subject = f"{subj}" if subj else ""
+        line_type = f"({ltype})" if ltype else ""
+
         rooms = ", ".join([x for x in (room1, room2) if x])
-        if rooms:
-            loc_parts.append(f"ауд. {rooms}")
+        loc_parts = ([building] if building else []) + ([f"<i>ауд. {rooms}</i>"] if rooms else [])
+        loc = ", ".join(loc_parts)
 
-        tail_parts = []
-        if loc_parts:
-            tail_parts.append(", ".join(loc_parts))
-        if teacher:
-            tail_parts.append(teacher)
+        clean_t = re.sub(r'[\u00A0\u2000-\u200B]', ' ', traw)
+        teachers = [s.strip() for s in re.split(r'[;,]|\s{2,}|\t+', clean_t) if s.strip()]
+        teach = ", ".join(teachers)
 
-        line2 = " — ".join(tail_parts) if tail_parts else ""
+        line_place = " — ".join([loc, teach]) if (loc and teach) else (loc or teach)
 
-        result.append(line1)
-        if line2:
-            result.append(line2)
-        result.append("")
+        block = "\n".join(x for x in (line_time if time else "", line_subject, line_type, line_place) if x)
+        out.append(block)
+        out.append(sep)
 
-    return "\n".join(result).strip()
+    return "\n".join(out)
 
 
 @router.message(lambda m: m.text in [
@@ -134,7 +137,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons)
         await message.answer(
-            format_day_schedule(day_lessons, day_name, group),
+            format_day_schedule(day_lessons, day_name),
             parse_mode="HTML", disable_web_page_preview=True
         )
 
@@ -143,7 +146,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons)
         await message.answer(
-            format_day_schedule(day_lessons, day_name, group),
+            format_day_schedule(day_lessons, day_name),
             parse_mode="HTML", disable_web_page_preview=True
         )
 
@@ -159,7 +162,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
             day_lessons = filter_by_week(day_lessons)
-            day_text = format_day_schedule(day_lessons, day, group)
+            day_text = format_day_schedule(day_lessons, day)
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "➡️ Следующая неделя":
@@ -173,7 +176,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
             day_lessons = filter_lessons_by_day(lessons, day)
             day_lessons = [l for l in day_lessons
                            if not l.get("week_type") or l.get("week_type").lower() == next_type]
-            day_text = format_day_schedule(day_lessons, day, group)
+            day_text = day_text = format_day_schedule(day_lessons, day)
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "📚 Вся без фильтров":
@@ -184,5 +187,5 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
-            day_text = format_day_schedule(day_lessons, day, group)
+            day_text = format_day_schedule(day_lessons, day, show_week_per_lesson=True)
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)

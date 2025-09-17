@@ -26,6 +26,6 @@ async def cmd_start(message: types.Message) -> None:
 async def handle_schedule_button(message: types.Message) -> None:
     logger.info("Пользователь %s запросил расписание", message.from_user.id)
     await message.answer(
-        "Введите номер группы:\nПример: 09-825, 8251160, 8251",
+        "Введите номер группы:\nПример: 8251160",
         reply_markup=types.ReplyKeyboardRemove(),
     )
