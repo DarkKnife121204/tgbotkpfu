@@ -37,7 +37,7 @@ def _time_to_minutes(time_str: str) -> int:
     return hours * 60 + minutes
 
 
-def get_current_week_type(start_date: date = date(2024, 9, 1)) -> str:
+def get_current_week_type(start_date: date = date(2025, 9, 1)) -> str:
     today = date.today()
     weeks_passed = ((today - start_date).days // 7)
     return "в" if weeks_passed % 2 == 0 else "н"
