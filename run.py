@@ -1,15 +1,9 @@
 import asyncio
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-load_dotenv(Path(__file__).parent / ".env")
-
-
-async def run():
-    from app.main import main
-    await main()
+from app.main import main
 
 
 if __name__ == "__main__":
-    asyncio.run(run())
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        print("❌ Бот остановлен.")

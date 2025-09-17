@@ -1,8 +1,10 @@
+import logging
 from aiogram import Router, types
 from aiogram.filters import Command
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 router = Router()
+logger = logging.getLogger(__name__)
 
 
 @router.message(Command("start"))
@@ -22,6 +24,7 @@ async def cmd_start(message: types.Message) -> None:
 
 @router.message(lambda message: message.text == "📅 Расписание")
 async def handle_schedule_button(message: types.Message) -> None:
+    logger.info("Пользователь %s запросил расписание", message.from_user.id)
     await message.answer(
         "Введите номер группы:\nПример: 09-825, 8251160, 8251",
         reply_markup=types.ReplyKeyboardRemove(),

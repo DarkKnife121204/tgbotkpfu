@@ -1,10 +1,9 @@
 import html
 import logging
-
 from aiogram import Router, types
 from aiogram.filters import Command
 
-from app.config import cfg
+from app.services.config import cfg
 from app.handlers.schedule_buttons import get_schedule_keyboard, user_data
 from app.services.google_csv import find_group_schedule
 from app.services.parser import parse_schedule
@@ -20,6 +19,8 @@ def _norm_group(s: str) -> str:
 @router.message(Command("schedule"))
 @router.message(lambda message: message.text and not message.text.startswith("/"))
 async def cmd_schedule(message: types.Message) -> None:
+    logger.info("Пользователь %s запросил расписание: %s", message.from_user.id, message.text)
+
     if message.text.startswith("/"):
         args = (message.text or "").split(maxsplit=1)[1:]
         if not args:
@@ -32,8 +33,15 @@ async def cmd_schedule(message: types.Message) -> None:
     group = _norm_group(group_input)
     if not group:
         await message.answer(
-            "Не распознал номер группы. Пример: 09-825, 8251160, 8251\n"
+            "Не распознал номер группы. Пример: 8251160\n"
             "Попробуйте еще раз:"
+        )
+        return
+
+    if len(group) != 7:
+        await message.answer(
+            "❗Номер группы должен содержать ровно 7 цифр.\n"
+            "Попробуйте снова:"
         )
         return
 

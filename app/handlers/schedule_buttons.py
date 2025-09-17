@@ -17,13 +17,22 @@ def get_schedule_keyboard() -> types.ReplyKeyboardMarkup:
     builder.add(types.KeyboardButton(text="📅 Завтра"))
     builder.add(types.KeyboardButton(text="📋 Вся неделя"))
     builder.add(types.KeyboardButton(text="🔍 Другая группа"))
-    builder.adjust(2)
+    builder.adjust(3, 1)
+    return builder.as_markup(resize_keyboard=True)
+
+
+def get_week_menu_keyboard() -> types.ReplyKeyboardMarkup:
+    builder = ReplyKeyboardBuilder()
+    builder.add(types.KeyboardButton(text="🔎 Текущая неделя"))
+    builder.add(types.KeyboardButton(text="➡️ Следующая неделя"))
+    builder.add(types.KeyboardButton(text="📚 Вся без фильтров"))
+    builder.add(types.KeyboardButton(text="⬅️ Назад"))
+    builder.adjust(3, 1)
     return builder.as_markup(resize_keyboard=True)
 
 
 def get_day_name(day_offset: int = 0) -> str:
-    days = ["Понедельник", "Вторник", "Среда",
-            "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     today = datetime.now() + timedelta(days=day_offset)
     return days[today.weekday()]
 
@@ -93,7 +102,10 @@ def format_day_schedule(lessons: List[dict], day_name: str, group: str) -> str:
     return "\n".join(result).strip()
 
 
-@router.message(lambda m: m.text in ["📅 Сегодня", "📅 Завтра", "📋 Вся неделя", "🔍 Другая группа"])
+@router.message(lambda m: m.text in [
+    "📅 Сегодня", "📅 Завтра", "📋 Вся неделя", "🔍 Другая группа",
+    "🔎 Текущая неделя", "➡️ Следующая неделя", "📚 Вся без фильтров", "⬅️ Назад"
+])
 async def handle_schedule_buttons(message: types.Message) -> None:
     user_id = message.from_user.id
 
@@ -102,6 +114,10 @@ async def handle_schedule_buttons(message: types.Message) -> None:
             "Введите номер группы:\nПример: 09-825, 8251160, 8251",
             reply_markup=types.ReplyKeyboardRemove(),
         )
+        return
+
+    if message.text == "⬅️ Назад":
+        await message.answer("Выберите действие:", reply_markup=get_schedule_keyboard())
         return
 
     if user_id not in user_data:
@@ -117,23 +133,55 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         day_name = get_day_name(0)
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons)
-        await message.answer(format_day_schedule(day_lessons, day_name, group),
-                             parse_mode="HTML", disable_web_page_preview=True)
+        await message.answer(
+            format_day_schedule(day_lessons, day_name, group),
+            parse_mode="HTML", disable_web_page_preview=True
+        )
 
     elif message.text == "📅 Завтра":
         day_name = get_day_name(1)
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons)
-        await message.answer(format_day_schedule(day_lessons, day_name, group),
-                             parse_mode="HTML", disable_web_page_preview=True)
+        await message.answer(
+            format_day_schedule(day_lessons, day_name, group),
+            parse_mode="HTML", disable_web_page_preview=True
+        )
 
     elif message.text == "📋 Вся неделя":
-        await message.answer(f"📆 <b>Расписание на неделю</b>\nГруппа: <b>{group}</b>",
-                             parse_mode="HTML")
+        await message.answer("Выберите фильтр:", reply_markup=get_week_menu_keyboard())
 
-        days_order = ["Понедельник", "Вторник", "Среда",
-                      "Четверг", "Пятница", "Суббота"]
+    elif message.text == "🔎 Текущая неделя":
+        await message.answer(
+            f"📆 <b>Расписание на текущую неделю</b>\nГруппа: <b>{group}</b>",
+            parse_mode="HTML", reply_markup=get_week_menu_keyboard()
+        )
+        days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+        for day in days_order:
+            day_lessons = filter_lessons_by_day(lessons, day)
+            day_lessons = filter_by_week(day_lessons)
+            day_text = format_day_schedule(day_lessons, day, group)
+            await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
+    elif message.text == "➡️ Следующая неделя":
+        await message.answer(
+            f"📆 <b>Расписание на следующую неделю</b>\nГруппа: <b>{group}</b>",
+            parse_mode="HTML", reply_markup=get_week_menu_keyboard()
+        )
+        days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+        next_type = "н" if get_current_week_type() == "в" else "в"
+        for day in days_order:
+            day_lessons = filter_lessons_by_day(lessons, day)
+            day_lessons = [l for l in day_lessons
+                           if not l.get("week_type") or l.get("week_type").lower() == next_type]
+            day_text = format_day_schedule(day_lessons, day, group)
+            await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
+
+    elif message.text == "📚 Вся без фильтров":
+        await message.answer(
+            f"📆 <b>Расписание на неделю (без фильтра)</b>\nГруппа: <b>{group}</b>",
+            parse_mode="HTML", reply_markup=get_week_menu_keyboard()
+        )
+        days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
             day_text = format_day_schedule(day_lessons, day, group)
