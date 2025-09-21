@@ -46,18 +46,20 @@ def _time_to_minutes(time_str: str):
     return hours * 60 + minutes
 
 
-def get_current_week_type(start_date: date = date(2025, 9, 1)):
-    today = date.today()
-    weeks_passed = ((today - start_date).days // 7)
+def get_current_week_type(start_date: date = date(2025, 9, 1),target_date: date | None = None,):
+    d = target_date or date.today()
+    weeks_passed = (d - start_date).days // 7
     return "в" if weeks_passed % 2 == 0 else "н"
 
 
-def filter_by_week(lessons: List[dict]):
-    week_type = get_current_week_type()
-    return [
-        lesson for lesson in lessons
-        if not lesson.get("week_type") or lesson.get("week_type").lower() == week_type
-    ]
+def _norm_week(x: str) -> str:
+    x = (x or "").strip().lower()
+    return "в" if x.startswith("в") else ("н" if x.startswith("н") else x)
+
+
+def filter_by_week(lessons: list[dict], target_date: date | None = None) -> list[dict]:
+    wt = get_current_week_type(target_date=target_date)
+    return [l for l in lessons if not l.get("week_type") or _norm_week(l.get("week_type")) == wt]
 
 
 def format_day_schedule(lessons: List[dict], day_name: str, show_week_per_lesson: bool = False):
@@ -135,7 +137,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
     if message.text == "📅 Сегодня":
         day_name = get_day_name(0)
         day_lessons = filter_lessons_by_day(lessons, day_name)
-        day_lessons = filter_by_week(day_lessons)
+        day_lessons = filter_by_week(day_lessons, target_date=date.today())
         await message.answer(
             format_day_schedule(day_lessons, day_name),
             parse_mode="HTML", disable_web_page_preview=True
@@ -144,7 +146,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
     elif message.text == "📅 Завтра":
         day_name = get_day_name(1)
         day_lessons = filter_lessons_by_day(lessons, day_name)
-        day_lessons = filter_by_week(day_lessons)
+        day_lessons = filter_by_week(day_lessons, target_date=date.today() + timedelta(days=1))
         await message.answer(
             format_day_schedule(day_lessons, day_name),
             parse_mode="HTML", disable_web_page_preview=True
@@ -161,7 +163,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
-            day_lessons = filter_by_week(day_lessons)
+            day_lessons = filter_by_week(day_lessons, target_date=date.today())
             day_text = format_day_schedule(day_lessons, day)
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
@@ -171,11 +173,10 @@ async def handle_schedule_buttons(message: types.Message) -> None:
             parse_mode="HTML", reply_markup=get_week_menu_keyboard()
         )
         days_order = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
-        next_type = "н" if get_current_week_type() == "в" else "в"
+        target = date.today() + timedelta(days=7)
         for day in days_order:
             day_lessons = filter_lessons_by_day(lessons, day)
-            day_lessons = [l for l in day_lessons
-                           if not l.get("week_type") or l.get("week_type").lower() == next_type]
+            day_lessons = filter_by_week(day_lessons, target_date=target)
             day_text = day_text = format_day_schedule(day_lessons, day)
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 

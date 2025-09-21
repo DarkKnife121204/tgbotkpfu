@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.message(Command("start"))
-async def cmd_start(message: types.Message) -> None:
+async def cmd_start(message: types.Message):
     keyboard = (
         ReplyKeyboardBuilder()
         .add(types.KeyboardButton(text="📅 Расписание"))
@@ -17,13 +17,14 @@ async def cmd_start(message: types.Message) -> None:
 
     await message.answer(
         "👋 Добро пожаловать в бот расписания КФУ!\n"
+        "Сейчас бот в режиме разработки, поэтому возможны перебои в работе.\n"
         "Нажмите кнопку ниже, чтобы посмотреть расписание.",
         reply_markup=keyboard,
     )
 
 
 @router.message(lambda message: message.text == "📅 Расписание")
-async def handle_schedule_button(message: types.Message) -> None:
+async def handle_schedule_button(message: types.Message):
     logger.info("Пользователь %s запросил расписание", message.from_user.id)
     await message.answer(
         "Введите номер группы:\nПример: 8251160",

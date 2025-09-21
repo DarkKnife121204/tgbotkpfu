@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 BASE_URL = "https://docs.google.com/spreadsheets/d/{id}/export?format=csv&gid={gid}"
 
 
-async def fetch_csv_text(spreadsheet_id: str, gid: int, session: Optional[aiohttp.ClientSession] = None) -> Optional[str]:
+async def fetch_csv_text(spreadsheet_id: str, gid: int, session: Optional[aiohttp.ClientSession] = None):
     url = BASE_URL.format(id=spreadsheet_id, gid=gid)
     logger.info("Загрузка CSV: GID=%s", gid)
     logger.debug("URL: %s", url)
@@ -36,7 +36,7 @@ async def fetch_csv_text(spreadsheet_id: str, gid: int, session: Optional[aiohtt
             await session.close()
 
 
-async def find_group_schedule(spreadsheet_id: str, gids: List[int], group_code: str) -> Optional[str]:
+async def find_group_schedule(spreadsheet_id: str, gids: List[int], group_code: str):
     logger.info("Поиск группы %s в листах: %s", group_code, gids)
 
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as session:

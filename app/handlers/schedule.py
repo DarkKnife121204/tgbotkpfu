@@ -5,7 +5,7 @@ from aiogram.filters import Command
 
 from app.services.config import cfg
 from app.handlers.schedule_buttons import get_schedule_keyboard, user_data
-from app.services.google_csv import find_group_schedule
+from app.services.csv_cache import find_group_schedule_local
 from app.services.parser import parse_schedule
 
 router = Router()
@@ -47,7 +47,7 @@ async def cmd_schedule(message: types.Message) -> None:
 
     status_msg = await message.answer(f"🔍 Ищу группу {group}...")
 
-    csv_text = await find_group_schedule(cfg.spreadsheet_id, cfg.gids, group)
+    csv_text = find_group_schedule_local(group)
     if not csv_text:
         await status_msg.edit_text(
             f"❌ Группа <b>{html.escape(group)}</b> не найдена.\n"

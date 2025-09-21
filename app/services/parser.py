@@ -8,20 +8,17 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def _clean_series(series: pd.Series) -> pd.Series:
+def _clean_series(series: pd.Series):
     return series.astype(str).str.strip().replace("nan", "")
 
 
-def _strip_dot_zero(series: pd.Series) -> pd.Series:
+def _strip_dot_zero(series: pd.Series):
     return series.apply(
         lambda s: re.sub(r'^(\d+)\.0$', r'\1', s) if isinstance(s, str) else s
     )
 
 
 def parse_schedule(csv_text: str, group_code: str) -> List[Dict]:
-    """
-    Парсит CSV расписания для указанной группы в список словарей.
-    """
     if not csv_text:
         logger.warning("Получен пустой CSV для группы %s", group_code)
         return []
@@ -37,7 +34,6 @@ def parse_schedule(csv_text: str, group_code: str) -> List[Dict]:
     times = _clean_series(df[col_time])
     weeks = _clean_series(df[col_week])
 
-    # Поиск колонки с группой
     start_idx = next(
         (i for i, col in enumerate(df.columns) if group_code in str(col[0])),
         None,
