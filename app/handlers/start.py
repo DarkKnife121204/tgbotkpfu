@@ -15,6 +15,7 @@ async def cmd_start(message: types.Message):
         .as_markup(resize_keyboard=True)
     )
 
+    logger.info("Пользователь %s: %s", message.from_user.id, message.text)
     await message.answer(
         "👋 Добро пожаловать в бот расписания КФУ!\n"
         "Сейчас бот в режиме разработки, поэтому возможны перебои в работе.\n"

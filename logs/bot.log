@@ -1,157 +1,36 @@
-2025-09-21 16:13:31,988 | INFO     | app.main | Запуск бота...
-2025-09-21 16:13:31,991 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
-2025-09-21 16:13:32,303 | INFO     | aiogram.dispatcher | Start polling
-2025-09-21 16:13:32,307 | INFO     | app.main | Следующее обновление CSV через 31588 сек.
-2025-09-21 16:13:37,656 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:14:05,937 | INFO     | aiogram.event | Update id=72524744 is handled. Duration 4671 ms by bot id=8130927700
-2025-09-21 16:14:10,111 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 2241125
-2025-09-21 16:14:10,210 | INFO     | app.services.csv_cache | Группа 2241125 найдена в gid_1091191709.csv
-2025-09-21 16:14:10,401 | INFO     | aiogram.event | Update id=72524745 is handled. Duration 281 ms by bot id=8130927700
-2025-09-21 16:14:13,785 | INFO     | aiogram.event | Update id=72524746 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:14:33,013 | INFO     | aiogram.event | Update id=72524747 is handled. Duration 141 ms by bot id=8130927700
-2025-09-21 16:14:54,784 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 3211103
-2025-09-21 16:14:54,905 | INFO     | app.services.csv_cache | Группа 3211103 найдена в gid_1325846251.csv
-2025-09-21 16:14:55,104 | INFO     | aiogram.event | Update id=72524748 is handled. Duration 311 ms by bot id=8130927700
-2025-09-21 16:15:07,493 | INFO     | aiogram.event | Update id=72524749 is handled. Duration 77 ms by bot id=8130927700
-2025-09-21 16:15:09,979 | INFO     | aiogram.event | Update id=72524750 is handled. Duration 202 ms by bot id=8130927700
-2025-09-21 16:17:25,378 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 3201103
-2025-09-21 16:17:25,484 | INFO     | app.services.csv_cache | Группа 3201103 найдена в gid_782502099.csv
-2025-09-21 16:17:25,651 | INFO     | aiogram.event | Update id=72524751 is handled. Duration 266 ms by bot id=8130927700
-2025-09-21 16:17:42,242 | INFO     | aiogram.dispatcher | Polling stopped
-2025-09-21 16:17:42,503 | WARNING  | app.main | Polling остановлен (CancelledError)
-2025-09-21 16:17:42,503 | INFO     | app.main | Бот завершил работу.
-2025-09-21 16:17:42,504 | INFO     | aiogram.dispatcher | Polling stopped for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:17:45,146 | INFO     | app.main | Запуск бота...
-2025-09-21 16:17:45,147 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
-2025-09-21 16:17:45,461 | INFO     | aiogram.dispatcher | Start polling
-2025-09-21 16:17:45,464 | INFO     | app.main | Следующее обновление CSV через 135 сек.
-2025-09-21 16:17:50,059 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:20:00,006 | INFO     | app.services.csv_cache | Обновление CSV: скачиваю новые версии и заменяю старые...
-2025-09-21 16:20:00,006 | INFO     | app.services.google_csv | Загрузка CSV: GID=0
-2025-09-21 16:20:00,007 | INFO     | app.services.google_csv | Загрузка CSV: GID=1091191709
-2025-09-21 16:20:00,008 | INFO     | app.services.google_csv | Загрузка CSV: GID=92806381
-2025-09-21 16:20:00,009 | INFO     | app.services.google_csv | Загрузка CSV: GID=581856196
-2025-09-21 16:20:01,367 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_1091191709.csv
-2025-09-21 16:20:01,368 | INFO     | app.services.google_csv | Загрузка CSV: GID=1325846251
-2025-09-21 16:20:01,410 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_0.csv
-2025-09-21 16:20:01,411 | INFO     | app.services.google_csv | Загрузка CSV: GID=782502099
-2025-09-21 16:20:01,498 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_92806381.csv
-2025-09-21 16:20:01,961 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_581856196.csv
-2025-09-21 16:20:02,484 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_1325846251.csv
-2025-09-21 16:20:03,147 | INFO     | app.services.csv_cache | CSV сохранён: data\csv\gid_782502099.csv
-2025-09-21 16:20:03,147 | INFO     | app.services.csv_cache | Готово. Обновлено файлов: 6
-2025-09-21 16:20:03,148 | INFO     | app.main | Следующее обновление CSV через 31197 сек.
-2025-09-21 16:30:37,472 | INFO     | aiogram.dispatcher | Polling stopped
-2025-09-21 16:30:37,737 | WARNING  | app.main | Polling остановлен (CancelledError)
-2025-09-21 16:30:37,737 | INFO     | app.main | Бот завершил работу.
-2025-09-21 16:30:37,737 | INFO     | aiogram.dispatcher | Polling stopped for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:30:40,639 | INFO     | app.main | Запуск бота...
-2025-09-21 16:30:40,640 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
-2025-09-21 16:30:40,954 | INFO     | aiogram.dispatcher | Start polling
-2025-09-21 16:30:40,957 | INFO     | app.main | Следующее обновление CSV через 30559 сек.
-2025-09-21 16:30:46,267 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:31:23,584 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 2241125
-2025-09-21 16:31:24,766 | INFO     | app.services.csv_cache | Группа 2241125 найдена в gid_1091191709.csv
-2025-09-21 16:31:24,963 | INFO     | aiogram.event | Update id=72524752 is handled. Duration 1375 ms by bot id=8130927700
-2025-09-21 16:31:26,087 | INFO     | aiogram.event | Update id=72524753 is handled. Duration 79 ms by bot id=8130927700
-2025-09-21 16:31:29,660 | INFO     | aiogram.event | Update id=72524754 is handled. Duration 140 ms by bot id=8130927700
-2025-09-21 16:31:31,918 | INFO     | aiogram.event | Update id=72524755 is handled. Duration 469 ms by bot id=8130927700
-2025-09-21 16:31:33,446 | INFO     | aiogram.event | Update id=72524756 is handled. Duration 655 ms by bot id=8130927700
-2025-09-21 16:31:35,620 | INFO     | aiogram.event | Update id=72524757 is handled. Duration 640 ms by bot id=8130927700
-2025-09-21 16:31:37,785 | INFO     | aiogram.event | Update id=72524758 is handled. Duration 657 ms by bot id=8130927700
-2025-09-21 16:34:30,315 | INFO     | aiogram.dispatcher | Polling stopped
-2025-09-21 16:34:30,575 | WARNING  | app.main | Polling остановлен (CancelledError)
-2025-09-21 16:34:30,575 | INFO     | app.main | Бот завершил работу.
-2025-09-21 16:34:30,576 | INFO     | aiogram.dispatcher | Polling stopped for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:34:33,548 | INFO     | app.main | Запуск бота...
-2025-09-21 16:34:33,549 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
-2025-09-21 16:34:33,882 | INFO     | aiogram.dispatcher | Start polling
-2025-09-21 16:34:33,886 | INFO     | app.main | Следующее обновление CSV через 30326 сек.
-2025-09-21 16:34:38,875 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:34:38,945 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 2241125
-2025-09-21 16:34:44,342 | INFO     | app.services.csv_cache | Группа 2241125 найдена в gid_1091191709.csv
-2025-09-21 16:34:44,544 | INFO     | aiogram.event | Update id=72524759 is handled. Duration 5609 ms by bot id=8130927700
-2025-09-21 16:34:47,252 | INFO     | aiogram.event | Update id=72524760 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:34:48,340 | INFO     | aiogram.event | Update id=72524761 is handled. Duration 204 ms by bot id=8130927700
-2025-09-21 16:34:50,596 | INFO     | aiogram.event | Update id=72524762 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:34:52,820 | INFO     | aiogram.event | Update id=72524763 is handled. Duration 750 ms by bot id=8130927700
-2025-09-21 16:34:54,158 | INFO     | aiogram.event | Update id=72524764 is handled. Duration 750 ms by bot id=8130927700
-2025-09-21 16:34:55,632 | INFO     | aiogram.event | Update id=72524765 is handled. Duration 811 ms by bot id=8130927700
-2025-09-21 16:34:56,467 | INFO     | aiogram.event | Update id=72524766 is handled. Duration 186 ms by bot id=8130927700
-2025-09-21 16:34:58,120 | INFO     | aiogram.event | Update id=72524767 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:35:03,472 | INFO     | aiogram.event | Update id=72524768 is handled. Duration 139 ms by bot id=8130927700
-2025-09-21 16:40:10,517 | INFO     | aiogram.dispatcher | Polling stopped
-2025-09-21 16:40:10,769 | WARNING  | app.main | Polling остановлен (CancelledError)
-2025-09-21 16:40:10,769 | INFO     | app.main | Бот завершил работу.
-2025-09-21 16:40:10,770 | INFO     | aiogram.dispatcher | Polling stopped for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:40:13,516 | INFO     | app.main | Запуск бота...
-2025-09-21 16:40:13,517 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
-2025-09-21 16:40:13,857 | INFO     | aiogram.dispatcher | Start polling
-2025-09-21 16:40:13,860 | INFO     | app.main | Следующее обновление CSV через 29986 сек.
-2025-09-21 16:40:27,658 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
-2025-09-21 16:40:27,725 | INFO     | app.handlers.start | Пользователь 879714530 запросил расписание
-2025-09-21 16:40:28,191 | INFO     | aiogram.event | Update id=72524769 is handled. Duration 469 ms by bot id=8130927700
-2025-09-21 16:40:32,080 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 2241125
-2025-09-21 16:40:32,169 | INFO     | app.services.csv_cache | Группа 2241125 найдена в gid_1091191709.csv
-2025-09-21 16:40:32,351 | INFO     | aiogram.event | Update id=72524770 is handled. Duration 264 ms by bot id=8130927700
-2025-09-21 16:40:33,435 | INFO     | aiogram.event | Update id=72524771 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:33,767 | INFO     | aiogram.event | Update id=72524772 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:40:33,954 | INFO     | aiogram.event | Update id=72524773 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:34,140 | INFO     | aiogram.event | Update id=72524774 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:34,384 | INFO     | aiogram.event | Update id=72524775 is handled. Duration 108 ms by bot id=8130927700
-2025-09-21 16:40:34,556 | INFO     | aiogram.event | Update id=72524776 is handled. Duration 78 ms by bot id=8130927700
-2025-09-21 16:40:34,782 | INFO     | aiogram.event | Update id=72524777 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:40:35,009 | INFO     | aiogram.event | Update id=72524778 is handled. Duration 92 ms by bot id=8130927700
-2025-09-21 16:40:35,235 | INFO     | aiogram.event | Update id=72524779 is handled. Duration 110 ms by bot id=8130927700
-2025-09-21 16:40:35,467 | INFO     | aiogram.event | Update id=72524780 is handled. Duration 139 ms by bot id=8130927700
-2025-09-21 16:40:35,660 | INFO     | aiogram.event | Update id=72524781 is handled. Duration 157 ms by bot id=8130927700
-2025-09-21 16:40:36,006 | INFO     | aiogram.event | Update id=72524783 is handled. Duration 217 ms by bot id=8130927700
-2025-09-21 16:40:36,261 | INFO     | aiogram.event | Update id=72524782 is handled. Duration 625 ms by bot id=8130927700
-2025-09-21 16:40:36,391 | INFO     | aiogram.event | Update id=72524785 is handled. Duration 219 ms by bot id=8130927700
-2025-09-21 16:40:36,592 | INFO     | aiogram.event | Update id=72524786 is handled. Duration 202 ms by bot id=8130927700
-2025-09-21 16:40:36,647 | INFO     | aiogram.event | Update id=72524784 is handled. Duration 656 ms by bot id=8130927700
-2025-09-21 16:40:36,790 | INFO     | aiogram.event | Update id=72524787 is handled. Duration 188 ms by bot id=8130927700
-2025-09-21 16:40:36,989 | INFO     | aiogram.event | Update id=72524788 is handled. Duration 187 ms by bot id=8130927700
-2025-09-21 16:40:37,173 | INFO     | aiogram.event | Update id=72524789 is handled. Duration 155 ms by bot id=8130927700
-2025-09-21 16:40:37,310 | INFO     | aiogram.event | Update id=72524790 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:40:37,447 | INFO     | aiogram.event | Update id=72524791 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:37,720 | INFO     | aiogram.event | Update id=72524792 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:37,777 | INFO     | aiogram.event | Update id=72524794 is handled. Duration 78 ms by bot id=8130927700
-2025-09-21 16:40:37,806 | INFO     | aiogram.event | Update id=72524793 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:40:37,848 | INFO     | aiogram.event | Update id=72524795 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:37,913 | INFO     | aiogram.event | Update id=72524797 is handled. Duration 78 ms by bot id=8130927700
-2025-09-21 16:40:37,935 | INFO     | aiogram.event | Update id=72524798 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:40:37,993 | INFO     | aiogram.event | Update id=72524800 is handled. Duration 77 ms by bot id=8130927700
-2025-09-21 16:40:38,078 | INFO     | aiogram.event | Update id=72524802 is handled. Duration 110 ms by bot id=8130927700
-2025-09-21 16:40:38,105 | INFO     | aiogram.event | Update id=72524803 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:40:38,135 | INFO     | aiogram.event | Update id=72524805 is handled. Duration 92 ms by bot id=8130927700
-2025-09-21 16:40:38,187 | INFO     | aiogram.event | Update id=72524807 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,254 | INFO     | aiogram.event | Update id=72524809 is handled. Duration 92 ms by bot id=8130927700
-2025-09-21 16:40:38,277 | INFO     | aiogram.event | Update id=72524808 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:40:38,319 | INFO     | aiogram.event | Update id=72524811 is handled. Duration 78 ms by bot id=8130927700
-2025-09-21 16:40:38,377 | INFO     | aiogram.event | Update id=72524813 is handled. Duration 77 ms by bot id=8130927700
-2025-09-21 16:40:38,413 | INFO     | aiogram.event | Update id=72524814 is handled. Duration 110 ms by bot id=8130927700
-2025-09-21 16:40:38,451 | INFO     | aiogram.event | Update id=72524815 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,520 | INFO     | aiogram.event | Update id=72524818 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,552 | INFO     | aiogram.event | Update id=72524817 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:40:38,584 | INFO     | aiogram.event | Update id=72524819 is handled. Duration 79 ms by bot id=8130927700
-2025-09-21 16:40:38,653 | INFO     | aiogram.event | Update id=72524821 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,672 | INFO     | aiogram.event | Update id=72524822 is handled. Duration 109 ms by bot id=8130927700
-2025-09-21 16:40:38,727 | INFO     | aiogram.event | Update id=72524823 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,782 | INFO     | aiogram.event | Update id=72524825 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,820 | INFO     | aiogram.event | Update id=72524826 is handled. Duration 125 ms by bot id=8130927700
-2025-09-21 16:40:38,850 | INFO     | aiogram.event | Update id=72524828 is handled. Duration 94 ms by bot id=8130927700
-2025-09-21 16:40:38,914 | INFO     | aiogram.event | Update id=72524830 is handled. Duration 78 ms by bot id=8130927700
-2025-09-21 16:40:38,981 | INFO     | aiogram.event | Update id=72524831 is handled. Duration 93 ms by bot id=8130927700
-2025-09-21 16:40:42,839 | INFO     | aiogram.event | Update id=72524806 is handled. Duration 4796 ms by bot id=8130927700
-2025-09-21 16:40:42,864 | INFO     | aiogram.event | Update id=72524820 is handled. Duration 4360 ms by bot id=8130927700
-2025-09-21 16:40:42,886 | INFO     | aiogram.event | Update id=72524812 is handled. Duration 4639 ms by bot id=8130927700
-2025-09-21 16:40:42,914 | INFO     | aiogram.event | Update id=72524804 is handled. Duration 4938 ms by bot id=8130927700
-2025-09-21 16:40:42,945 | INFO     | aiogram.event | Update id=72524824 is handled. Duration 4313 ms by bot id=8130927700
-2025-09-21 16:40:42,965 | INFO     | aiogram.event | Update id=72524827 is handled. Duration 4265 ms by bot id=8130927700
-2025-09-21 16:40:43,004 | INFO     | aiogram.event | Update id=72524829 is handled. Duration 4250 ms by bot id=8130927700
-2025-09-21 16:40:43,025 | INFO     | aiogram.event | Update id=72524796 is handled. Duration 5266 ms by bot id=8130927700
-2025-09-21 16:40:43,046 | INFO     | aiogram.event | Update id=72524810 is handled. Duration 4889 ms by bot id=8130927700
-2025-09-21 16:40:43,081 | INFO     | aiogram.event | Update id=72524816 is handled. Duration 4719 ms by bot id=8130927700
-2025-09-21 16:40:43,101 | INFO     | aiogram.event | Update id=72524801 is handled. Duration 5186 ms by bot id=8130927700
-2025-09-21 16:40:43,133 | INFO     | aiogram.event | Update id=72524799 is handled. Duration 5295 ms by bot id=8130927700
+2025-09-26 13:30:44,390 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 123
+2025-09-26 13:30:45,304 | INFO     | aiogram.event | Update id=72524849 is handled. Duration 914 ms by bot id=8130927700
+2025-09-26 13:31:05,237 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 1234567
+2025-09-26 13:31:05,644 | WARNING  | app.services.csv_cache | Группа 1234567 не найдена ни в одном локальном CSV.
+2025-09-26 13:31:06,056 | INFO     | aiogram.event | Update id=72524850 is handled. Duration 819 ms by bot id=8130927700
+2025-09-26 13:31:17,298 | INFO     | app.handlers.schedule | Пользователь 879714530 запросил расписание: 2241125
+2025-09-26 13:31:17,512 | INFO     | app.services.csv_cache | Группа 2241125 найдена в gid_1091191709.csv
+2025-09-26 13:31:18,323 | INFO     | aiogram.event | Update id=72524851 is handled. Duration 1025 ms by bot id=8130927700
+2025-09-26 13:31:30,300 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 📅 Сегодня
+2025-09-26 13:31:30,460 | INFO     | aiogram.event | Update id=72524852 is handled. Duration 160 ms by bot id=8130927700
+2025-09-26 13:31:32,239 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 📅 Завтра
+2025-09-26 13:31:32,441 | INFO     | aiogram.event | Update id=72524853 is handled. Duration 203 ms by bot id=8130927700
+2025-09-26 13:31:35,616 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 📋 Вся неделя
+2025-09-26 13:31:35,819 | INFO     | aiogram.event | Update id=72524854 is handled. Duration 203 ms by bot id=8130927700
+2025-09-26 13:31:50,472 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 🔎 Текущая неделя
+2025-09-26 13:31:52,707 | INFO     | aiogram.event | Update id=72524855 is handled. Duration 2236 ms by bot id=8130927700
+2025-09-26 13:31:54,961 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: ➡️ Следующая неделя
+2025-09-26 13:31:57,006 | INFO     | aiogram.event | Update id=72524856 is handled. Duration 2045 ms by bot id=8130927700
+2025-09-26 13:31:59,260 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 📚 Вся без фильтров
+2025-09-26 13:32:01,864 | INFO     | aiogram.event | Update id=72524857 is handled. Duration 2604 ms by bot id=8130927700
+2025-09-26 13:32:05,124 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: ⬅️ Назад
+2025-09-26 13:32:05,426 | INFO     | aiogram.event | Update id=72524858 is handled. Duration 303 ms by bot id=8130927700
+2025-09-26 13:32:08,269 | INFO     | app.handlers.schedule_buttons | Пользователь 879714530: 🔍 Другая группа
+2025-09-26 13:32:08,881 | INFO     | aiogram.event | Update id=72524859 is handled. Duration 613 ms by bot id=8130927700
+2025-09-26 13:32:16,253 | INFO     | aiogram.event | Update id=72524860 is handled. Duration 204 ms by bot id=8130927700
+2025-09-26 13:32:54,363 | WARNING  | aiogram.dispatcher | Received SIGINT signal
+2025-09-26 13:32:54,363 | INFO     | aiogram.dispatcher | Polling stopped for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
+2025-09-26 13:32:54,363 | INFO     | aiogram.dispatcher | Polling stopped
+2025-09-26 13:32:54,615 | INFO     | app.main | Бот завершил работу.
+2025-09-26 13:32:57,739 | INFO     | app.main | Запуск бота...
+2025-09-26 13:32:57,739 | INFO     | app.services.csv_cache | CSV уже есть в кэше (6 файлов).
+2025-09-26 13:32:57,749 | INFO     | aiogram.dispatcher | Start polling
+2025-09-26 13:32:57,750 | INFO     | app.main | Следующее обновление CSV через 19622 сек.
+2025-09-26 13:33:01,333 | INFO     | aiogram.dispatcher | Run polling for bot @DarkKnifeBot id=8130927700 - 'DarkKnife'
+2025-09-26 13:33:03,815 | INFO     | app.handlers.start | Пользователь 879714530: /start
+2025-09-26 13:33:04,627 | INFO     | aiogram.event | Update id=72524861 is handled. Duration 812 ms by bot id=8130927700

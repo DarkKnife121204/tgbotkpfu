@@ -115,6 +115,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
     user_id = message.from_user.id
 
     if message.text == "🔍 Другая группа":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer(
             "Введите номер группы:\nПример: 09-825, 8251160, 8251",
             reply_markup=types.ReplyKeyboardRemove(),
@@ -122,6 +123,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         return
 
     if message.text == "⬅️ Назад":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer("Выберите действие:", reply_markup=get_schedule_keyboard())
         return
 
@@ -135,6 +137,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
     group, lessons = user_data[user_id]
 
     if message.text == "📅 Сегодня":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         day_name = get_day_name(0)
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons, target_date=date.today())
@@ -144,6 +147,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         )
 
     elif message.text == "📅 Завтра":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         day_name = get_day_name(1)
         day_lessons = filter_lessons_by_day(lessons, day_name)
         day_lessons = filter_by_week(day_lessons, target_date=date.today() + timedelta(days=1))
@@ -153,9 +157,11 @@ async def handle_schedule_buttons(message: types.Message) -> None:
         )
 
     elif message.text == "📋 Вся неделя":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer("Выберите фильтр:", reply_markup=get_week_menu_keyboard())
 
     elif message.text == "🔎 Текущая неделя":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer(
             f"📆 <b>Расписание на текущую неделю</b>\nГруппа: <b>{group}</b>",
             parse_mode="HTML", reply_markup=get_week_menu_keyboard()
@@ -168,6 +174,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "➡️ Следующая неделя":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer(
             f"📆 <b>Расписание на следующую неделю</b>\nГруппа: <b>{group}</b>",
             parse_mode="HTML", reply_markup=get_week_menu_keyboard()
@@ -181,6 +188,7 @@ async def handle_schedule_buttons(message: types.Message) -> None:
             await message.answer(day_text, parse_mode="HTML", disable_web_page_preview=True)
 
     elif message.text == "📚 Вся без фильтров":
+        logger.info("Пользователь %s: %s", message.from_user.id, message.text)
         await message.answer(
             f"📆 <b>Расписание на неделю (без фильтра)</b>\nГруппа: <b>{group}</b>",
             parse_mode="HTML", reply_markup=get_week_menu_keyboard()
